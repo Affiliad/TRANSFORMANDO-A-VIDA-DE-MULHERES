@@ -181,7 +181,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 				<div class="elementor-widget-container">					
 <div class="main-video">
   <div style="padding:75% 0 0 0;position:relative;">
-   <iframe id="vimeoPlayer" src="https://player.vimeo.com/video/1046254960?autoplay=1&muted=0&controls=0&loop=0" width="640" height="360" frameborder="0" allowfullscreen></iframe>
+  <iframe id="vimeoPlayer" src="https://player.vimeo.com/video/1046254960?autoplay=1&muted=0&controls=0&loop=0" width="640" height="360" frameborder="0" allowfullscreen></iframe>
 
 <script src="https://player.vimeo.com/api/player.js"></script>
 <script>
@@ -189,18 +189,30 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var player = new Vimeo.Player(iframe);
 
     let lastTime = 0;
+    let isPlaying = false;
+
+    // Garante que o vídeo pode iniciar normalmente
+    player.on('play', function() {
+        isPlaying = true;
+    });
 
     player.on('timeupdate', function(event) {
         let currentTime = event.seconds;
 
-        // Se o usuário tentar avançar, volta para o último tempo permitido
-        if (currentTime > lastTime + 2) {
+        // Só impede avanços depois que o vídeo já começou a rodar
+        if (isPlaying && currentTime > lastTime + 2) {
             player.setCurrentTime(lastTime);
         } else {
             lastTime = currentTime; // Atualiza o último tempo válido
         }
     });
+
+    // Se o vídeo for pausado, permite continuar de onde parou
+    player.on('pause', function() {
+        isPlaying = false;
+    });
 </script>
+
 
 
 <div id="messageBox" style="display:none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 38px; background-color: #FE2260; color: white; font-size: 22px; font-weight: bold; border-radius: 10px; text-align: center; width: 100%; max-width: 300px;">
