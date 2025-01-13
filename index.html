@@ -183,35 +183,83 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div style="padding-top:25%;position:relative;">
   <iframe id="vimeoPlayer" src="https://player.vimeo.com/video/1046254960?autoplay=1&muted=1&controls=0&loop=0" width="640" height="360" frameborder="0" allowfullscreen></iframe>
 
-<script src="https://player.vimeo.com/api/player.js"></script>
-<script>
-    var iframe = document.getElementById('vimeoPlayer');
-    var player = new Vimeo.Player(iframe);
-
-    let lastTime = 0;
-    let isPlaying = false;
-
-    // Garante que o vídeo pode iniciar normalmente
-    player.on('play', function() {
-        isPlaying = true;
-    });
-
-    player.on('timeupdate', function(event) {
-        let currentTime = event.seconds;
-
-        // Só impede avanços depois que o vídeo já começou a rodar
-        if (isPlaying && currentTime > lastTime + 2) {
-            player.setCurrentTime(lastTime);
-        } else {
-            lastTime = currentTime; // Atualiza o último tempo válido
+   <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Botão de Desmutar Animado</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
         }
-    });
 
-    // Se o vídeo for pausado, permite continuar de onde parou
-    player.on('pause', function() {
-        isPlaying = false;
-    });
-</script>
+        .video-container {
+            position: relative;
+            width: 80%;
+            max-width: 800px;
+        }
+
+        iframe {
+            width: 100%;
+            height: 450px;
+        }
+
+        .mute-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 80px;
+            height: 80px;
+            background: url('https://i.gifer.com/XVo6.gif') no-repeat center center;
+            background-size: contain;
+            cursor: pointer;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="video-container">
+        <iframe 
+            id="vimeo-video" 
+            src="https://player.vimeo.com/video/1046254960?autoplay=1&muted=1" 
+            frameborder="0" 
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowfullscreen>
+        </iframe>
+        <div class="mute-button" id="mute-button"></div>
+    </div>
+
+    <script src="https://player.vimeo.com/api/player.js"></script>
+    <script>
+        const iframe = document.getElementById('vimeo-video');
+        const player = new Vimeo.Player(iframe);
+        const muteButton = document.getElementById('mute-button');
+
+        function checkMuteStatus() {
+            player.getMuted().then(isMuted => {
+                if (isMuted) {
+                    muteButton.style.display = 'block';
+                } else {
+                    muteButton.style.display = 'none';
+                }
+            });
+        }
+
+        muteButton.addEventListener('click', () => {
+            player.setMuted(false).then(() => {
+                muteButton.style.display = 'none';
+            });
+        });
+
+        player.on('play', checkMuteStatus);
+        player.on('volumechange', checkMuteStatus);
+
+        checkMuteStatus();  // Verifica o status inicial
+    </script>
 
 
 
