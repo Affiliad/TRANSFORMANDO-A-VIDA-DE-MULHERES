@@ -182,12 +182,44 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="main-video">
   <div style="padding:75% 0 0 0;position:relative;">
     <iframe id="videoVimeo"
-      src="https://player.vimeo.com/video/1046254960?badge=0&autopause=0&controls=0&byline=0&autoplay=1&loop=0"
+      src="https://player.vimeo.com/video/1046254960?badge=0&autopause=0&controls=1&byline=0&autoplay=1&loop=0&muted=0"
       frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
       style="position:absolute;top:0;left:0;width:100%;height:100%;" title="001"></iframe>
   </div>
   <script src="https://player.vimeo.com/api/player.js"></script>
 </div>
+
+<!-- Caixa de Mensagem que aparecerá quando o vídeo for pausado -->
+<div id="messageBox" style="display:none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 20px; background-color: rgba(255, 99, 71, 0.8); color: white; font-size: 18px; font-weight: bold; border-radius: 10px; text-align: center; width: 80%; max-width: 500px;">
+  <p><strong>As vagas estão acabando!</strong><br> Termine de ver o vídeo agora ou fique de fora!</p>
+  <button onclick="resumeVideo()" style="padding: 10px 20px; background-color: #ff6347; color: white; border: none; border-radius: 5px; cursor: pointer;">Continuar Assistindo</button>
+</div>
+
+<!-- Botão que será exibido após o vídeo terminar -->
+<button id="btnFinalizar" style="display:none;">Finalizar</button>
+
+<script>
+  var iframe = document.getElementById('videoVimeo');
+  var player = new Vimeo.Player(iframe);
+
+  // Quando o vídeo terminar, mostrar o botão
+  player.on('ended', function() {
+    document.getElementById('btnFinalizar').style.display = 'block';
+  });
+
+  // Mostrar a caixa de mensagem quando o vídeo for pausado
+  player.on('pause', function() {
+    document.getElementById('messageBox').style.display = 'block';
+  });
+
+  // Função para despausar o vídeo e esconder a caixa de mensagem
+  function resumeVideo() {
+    player.play().catch(function(error) {
+      console.error('Erro ao tentar dar play no vídeo:', error);
+    });
+    document.getElementById('messageBox').style.display = 'none';
+  }
+</script>
 
 
 				</div>
