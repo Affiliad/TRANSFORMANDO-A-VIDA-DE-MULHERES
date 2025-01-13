@@ -189,36 +189,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <script src="https://player.vimeo.com/api/player.js"></script>
 </div>
 
-<!-- Caixa de Mensagem que aparecerá quando o vídeo for pausado -->
-<div id="messageBox" style="display:none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 100px; background-color: rgba(255, 99, 71, 0.8); color: white; font-size: 18px; font-weight: bold; border-radius: 10px; text-align: center; width: 100%; max-width: 1000px;">
-  <p><strong>As vagas estão acabando!</strong><br> Termine de ver o vídeo agora ou fique de fora!</p>
-  <button onclick="resumeVideo()" style="padding: 20px 30px; background-color: #ff6347; color: white; border: none; border-radius: 10px; cursor: pointer;">Continuar Assistindo</button>
+ <div class="elementor-element elementor-element-fa96d80 elementor-align-center elementor-widget elementor-widget-button" data-id="fa96d80" data-element_type="widget" data-widget_type="button.default">
+    <div class="elementor-widget-container">
+      <div class="elementor-button-wrapper">
+        <a class="elementor-button elementor-button-link elementor-size-sm" href="#certificado" id="cod_botao">
+          <span class="elementor-button-content-wrapper">
+            <span class="elementor-button-text">Continuar Assistindo</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <p style="margin-top: 15px; font-size: 16px; font-weight: normal; color: #f9f9f9; opacity: 0.8;">Clique no botão para continuar assistindo o vídeo</p>
 </div>
 
-<!-- Botão que será exibido após o vídeo terminar -->
-<button id="btnFinalizar" style="display:none;">Finalizar</button>
-
 <script>
-  var iframe = document.getElementById('videoVimeo');
-  var player = new Vimeo.Player(iframe);
-
-  // Quando o vídeo terminar, mostrar o botão
-  player.on('ended', function() {
-    document.getElementById('btnFinalizar').style.display = 'block';
-  });
-
-  // Mostrar a caixa de mensagem quando o vídeo for pausado
-  player.on('pause', function() {
-    document.getElementById('messageBox').style.display = 'block';
-  });
-
-  // Função para despausar o vídeo e esconder a caixa de mensagem
+  // Função para despausar o vídeo
   function resumeVideo() {
+    var iframe = document.getElementById('videoVimeo');
+    var player = new Vimeo.Player(iframe);
     player.play().catch(function(error) {
       console.error('Erro ao tentar dar play no vídeo:', error);
     });
     document.getElementById('messageBox').style.display = 'none';
   }
+
+  // Redefinir o clique do botão para ativar a função resumeVideo
+  document.getElementById('cod_botao').addEventListener('click', function(e) {
+    e.preventDefault(); // Impede o comportamento padrão do link
+    resumeVideo(); // Chama a função para retomar o vídeo
+  });
 </script>
 
 
