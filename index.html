@@ -189,7 +189,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <script src="https://player.vimeo.com/api/player.js"></script>
 </div>
 
- <div class="elementor-element elementor-element-fa96d80 elementor-align-center elementor-widget elementor-widget-button" data-id="fa96d80" data-element_type="widget" data-widget_type="button.default">
+ <div id="messageBox" style="display:none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 40px; background-color: rgba(255, 99, 71, 0.9); color: white; font-size: 20px; font-weight: bold; border-radius: 12px; text-align: center; width: 90%; max-width: 800px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+  <p><strong>As vagas estão acabando!</strong><br> Termine de ver o vídeo agora ou fique de fora!</p>
+
+  <!-- GIF de incentivo -->
+  <img src="https://example.com/gif.gif" alt="Incentivo para continuar assistindo" style="max-width: 100%; margin-bottom: 20px;">
+
+  <!-- Substituindo pelo seu botão -->
+  <div class="elementor-element elementor-element-fa96d80 elementor-align-center elementor-widget elementor-widget-button" data-id="fa96d80" data-element_type="widget" data-widget_type="button.default">
     <div class="elementor-widget-container">
       <div class="elementor-button-wrapper">
         <a class="elementor-button elementor-button-link elementor-size-sm" href="#certificado" id="cod_botao">
@@ -204,23 +211,38 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <p style="margin-top: 15px; font-size: 16px; font-weight: normal; color: #f9f9f9; opacity: 0.8;">Clique no botão para continuar assistindo o vídeo</p>
 </div>
 
+<script src="https://player.vimeo.com/api/player.js"></script>
+
 <script>
+  // Selecionando o iframe do vídeo
+  var iframe = document.getElementById('videoVimeo');
+  var player = new Vimeo.Player(iframe);
+
+  // Função para mostrar a mensagem de pausa
+  function showMessage() {
+    document.getElementById('messageBox').style.display = 'block';
+  }
+
   // Função para despausar o vídeo
   function resumeVideo() {
-    var iframe = document.getElementById('videoVimeo');
-    var player = new Vimeo.Player(iframe);
     player.play().catch(function(error) {
       console.error('Erro ao tentar dar play no vídeo:', error);
     });
     document.getElementById('messageBox').style.display = 'none';
   }
 
-  // Redefinir o clique do botão para ativar a função resumeVideo
+  // Mostrar a mensagem quando o vídeo for pausado
+  player.on('pause', function() {
+    showMessage();
+  });
+
+  // Função para adicionar a ação do botão
   document.getElementById('cod_botao').addEventListener('click', function(e) {
     e.preventDefault(); // Impede o comportamento padrão do link
     resumeVideo(); // Chama a função para retomar o vídeo
   });
 </script>
+
 
 
 				</div>
